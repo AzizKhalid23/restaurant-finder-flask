@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Search Restaurants</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      padding: 20px;
+    }
+    .search-container {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 600px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .search-container h2 {
+      text-align: center;
+    }
+    .input-group {
+      margin: 10px 0;
+    }
+    .input-group input {
+      width: 100%;
+      padding: 8px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .search-container button {
+      width: 100%;
+      padding: 10px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+    .result {
+      background: #e8f5e9;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 4px;
+    }
+    .no-result {
+      color: red;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="search-container">
+    <h2>Search Restaurants</h2>
+    <form method="POST">
+      <div class="input-group">
+        <input type="text" name="street" placeholder="Street">
+      </div>
+      <div class="input-group">
+        <input type="text" name="borough" placeholder="Borough">
+      </div>
+      <div class="input-group">
+        <input type="text" name="cuisine" placeholder="Cuisine">
+      </div>
+      <div class="input-group">
+        <input type="text" name="grade" placeholder="Grade">
+      </div>
+      <div class="input-group">
+        <input type="text" name="name" placeholder="Restaurant Name">
+      </div>
+      <button type="submit">Search</button>
+    </form>
+
+    {% if no_result %}
+      <p class="no-result">No result found.</p>
+    {% endif %}
+
+    {% if result %}
+      <h3>Results:</h3>
+      {% for r in result %}
+      <div class="result">
+        <strong>Name:</strong> {{ r['name'] if 'name' in r else 'N/A' }}<br>
+        <strong>Street:</strong> {{ r['address']['street'] if 'address' in r and 'street' in r['address'] else 'N/A' }}<br>
+        <strong>Borough:</strong> {{ r['borough'] if 'borough' in r else 'N/A' }}<br>
+        <strong>Cuisine:</strong> {{ r['cuisine'] if 'cuisine' in r else 'N/A' }}<br>
+        <strong>Grade:</strong> {{ r['grades'][0]['grade'] if 'grades' in r and r['grades'] else 'N/A' }}
+      </div>
+      {% endfor %}
+    {% endif %}
+  </div>
+</body>
+</html>
